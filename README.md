@@ -3,7 +3,7 @@ ___
 
 [![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
 [![](https://img.shields.io/badge/Python-3.9-blue.svg)](https://www.python.org/downloads/)
-[![DOI:10.1101/2024.10.23.619915v1](http://img.shields.io/badge/DOI-10.1101/2024.10.23.619915v1-B31B1B.svg)](https://doi.org/10.1101/2024.10.23.619915v1) 
+[![DOI:10.1101/2024.10.23.619915v1](http://img.shields.io/badge/DOI-10.1101/2024.10.23.619915v1-B31B1B.svg)](https://doi.org/10.1101/2024.10.23.619915) 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 This is the in-progress code repository for the preprint ["Evolutionary-Scale Enzymology Enables Biochemical Constant Prediction Across a Multi-Peaked Catalytic Landscape"](https://www.biorxiv.org/content/10.1101/2024.10.23.619915v1).
