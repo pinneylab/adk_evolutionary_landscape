@@ -1,0 +1,89 @@
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
+import numpy as np
+
+def plot_barplot_trust_by_lidtype(method_trust_dict, lid_types, k, title):
+    fig, ax = plt.subplots(figsize=(10, 8))
+
+    idx = k - 3
+    df_dict = {"Lidtype": ["All"] + lid_types}
+    for method, trust_dict in method_trust_dict.items():
+        df_dict[method] = [trust_dict[lidtype][idx] for lidtype in ["all"] + lid_types]
+
+    trustworthiness_df = pd.DataFrame(df_dict)
+
+    trustworthiness_df = trustworthiness_df.melt(id_vars="Lidtype", var_name="Method", value_name="Trustworthiness")
+    sns.barplot(data=trustworthiness_df, x="Lidtype", y="Trustworthiness", hue="Method", ax=ax, palette="colorblind")
+
+    # set one-hot to be hatched
+    for i, bar in enumerate(ax.patches):
+        print(i, bar)
+        if 8 > i > 3:
+            bar.set_hatch("//")
+        if i == 9:
+            bar.set_hatch("//")
+
+    ax.set_xlabel("Lid-Type")
+    ax.set_ylabel("Trustworthiness")
+    
+    ax.axhline(y=method_trust_dict["ESM-2"]["perfect"][2], color='r', linestyle='--', label="Perfect")
+    ax.axhline(y=method_trust_dict["ESM-2"]["shuffled"][2], color='grey', linestyle='--', label="Random")
+
+    ax.set_title(title)
+    ax.legend()
+    plt.tight_layout()
+    plt.show()
+    #plt.savefig("../data/fig_pdfs/esm_onehot_lidtype_trustworthiness.pdf")
+
+def plot_confidence_interval(ax: plt.Axes, 
+                             x: list, 
+                             y_mean: np.ndarray,
+                             y_ci: np.ndarray, 
+                             color, 
+                             label, 
+                             linewidth=4,
+                             point_size=100, 
+                             alpha=0.2,):
+
+    ax.plot(x,
+            y_mean, 
+            linewidth=linewidth, 
+            label=label, 
+            color=color)
+    ax.scatter(x, 
+               y_mean, 
+               s=point_size, 
+               color=color)
+    ax.fill_between(x, 
+                    y_mean - y_ci,
+                    y_mean + y_ci, 
+                    alpha=alpha, color=color)
+    
+def generate_col_colors(labels, palette='husl'):
+    """
+    Generate an array of colors based on string labels for use in Seaborn's clustermap.
+    
+    Parameters
+    ----------
+    labels : list of str
+        A list of string labels.
+    palette : str, optional
+        The name of a Seaborn palette to generate colors from.
+        
+    Returns
+    -------
+    col_colors : list of RGB tuples
+        A list of colors corresponding to the labels.
+    """
+    unique_labels = np.unique(labels)
+    n_unique_labels = len(unique_labels)
+    
+    # Generate a color palette
+    colors = sns.color_palette(palette, n_unique_labels)
+    
+    # Map labels to colors
+    label_to_color = dict(zip(unique_labels, colors))
+    col_colors = [label_to_color[label] for label in labels]
+    
+    return col_colors, label_to_color

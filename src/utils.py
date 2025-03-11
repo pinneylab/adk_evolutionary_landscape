@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import matplotlib
 import numpy as np
+from sklearn.manifold import trustworthiness
 
 #https://stackoverflow.com/questions/7404116/defining-the-midpoint-of-a-colormap-in-matplotlib
 def shifted_color_map(cmap, start=0, midpoint=0.5, stop=1.0, name='shiftedcmap'):
@@ -58,26 +59,40 @@ def confidence_interval(data, z=1.96):
     std_err = np.std(data)/np.sqrt(n)
     return z*std_err
 
-def plot_confidence_interval(ax: plt.Axes, 
-                             x: list, 
-                             y_mean: np.ndarray,
-                             y_ci: np.ndarray, 
-                             color, 
-                             label, 
-                             linewidth=4,
-                             point_size=100, 
-                             alpha=0.2,):
+def compute_trustworthiness_by_lidtype(df, lid_types, col_name, embedding_start_idx, embedding_end_idx, top_n_neighbors, metric="euclidean", random_shuffle_n=30):
+    np.random.seed(314)
 
-    ax.plot(x,
-            y_mean, 
-            linewidth=linewidth, 
-            label=label, 
-            color=color)
-    ax.scatter(x, 
-               y_mean, 
-               s=point_size, 
-               color=color)
-    ax.fill_between(x, 
-                    y_mean - y_ci,
-                    y_mean + y_ci, 
-                    alpha=alpha, color=color)
+    trust_result_dict = {
+        "perfect": [],
+        "shuffled": [],
+        "all": [],
+
+    }
+    for lidtype in lid_types:
+        trust_result_dict[lidtype] = []
+        trust_result_dict[lidtype + "_shuffled"] = []
+
+    subset_dfs = []
+    for lidtype in lid_types:
+        subset_dfs.append(df[df["lid_type"] == lidtype])
+
+    for k in range(3, top_n_neighbors+1):
+        trust_result_dict["perfect"].append(trustworthiness(df[col_name].to_numpy().reshape(-1,1), df[col_name].to_numpy().reshape(-1,1), n_neighbors=k))
+        trust_result_dict["all"].append(trustworthiness(df.iloc[:, embedding_start_idx:embedding_end_idx], df[col_name].to_numpy().reshape(-1,1), n_neighbors=k, metric=metric))
+    
+        for i, lidtype in enumerate(lid_types):
+            lidtype_df = subset_dfs[i]
+            trust_result_dict[lidtype].append(trustworthiness(lidtype_df.iloc[:, embedding_start_idx:embedding_end_idx], lidtype_df[col_name].to_numpy().reshape(-1,1), n_neighbors=k, metric=metric))
+            lidtype_random = []
+            for i in range(random_shuffle_n):
+                lidtype_random.append(trustworthiness(lidtype_df.iloc[:, embedding_start_idx:embedding_end_idx], np.random.permutation(lidtype_df[col_name].to_numpy()).reshape(-1,1), n_neighbors=k, metric=metric))
+            trust_result_dict[lidtype + "_shuffled"].append(np.mean(lidtype_random))
+            
+      
+        all_random = []
+        for i in range(random_shuffle_n):
+            all_random.append(trustworthiness(df.iloc[:, embedding_start_idx:embedding_end_idx], np.random.permutation(df[col_name].to_numpy()).reshape(-1,1), n_neighbors=k, metric=metric))
+
+       
+        trust_result_dict["shuffled"].append(np.mean(all_random))
+    return trust_result_dict
