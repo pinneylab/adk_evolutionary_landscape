@@ -52,3 +52,32 @@ def format_pval(p):
         return f"p = {p:.2f}"
     else:
         return f"p < 10^" + str(int(np.ceil(np.log10(p))))
+    
+def confidence_interval(data, z=1.96):
+    n = len(data)
+    std_err = np.std(data)/np.sqrt(n)
+    return z*std_err
+
+def plot_confidence_interval(ax: plt.Axes, 
+                             x: list, 
+                             y_mean: np.ndarray,
+                             y_ci: np.ndarray, 
+                             color, 
+                             label, 
+                             linewidth=4,
+                             point_size=100, 
+                             alpha=0.2,):
+
+    ax.plot(x,
+            y_mean, 
+            linewidth=linewidth, 
+            label=label, 
+            color=color)
+    ax.scatter(x, 
+               y_mean, 
+               s=point_size, 
+               color=color)
+    ax.fill_between(x, 
+                    y_mean - y_ci,
+                    y_mean + y_ci, 
+                    alpha=alpha, color=color)
