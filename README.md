@@ -8,17 +8,14 @@ ___
 
 This is the in-progress code repository for the preprint ["Evolutionary-Scale Enzymology Enables Biochemical Constant Prediction Across a Multi-Peaked Catalytic Landscape"](https://www.biorxiv.org/content/10.1101/2024.10.23.619915v1).
 
-### Overview
+## Overview
 ___
 
-**As of 2024-12-16**:
-
-
-This repository is in progress, and currently contains statistics, plotting, and analysis code from the assoiciated figures as jupyter notebooks.
+This repository is in progress, and currently contains plotting and analysis code from the assoiciated figures as jupyter notebooks.
 
 The ProteinNPT model architecture is described in the associated [paper](https://papers.nips.cc/paper_files/paper/2023/hash/6a4d5d85f7a52f062d23d98d544a5578-Abstract-Conference.html) and code is available on [GitHub](https://github.com/OATML-Markslab/ProteinNPT).
 
-### Contents
+## Contents (needs to be updated)
 ___
   - figures:
     - **fig1-6**: plotting and statistics
@@ -27,11 +24,36 @@ ___
   - notebooks:
     - **bootstrap_supervised_ml**: dataset bootstrapping, ablation, and lightweight supervised ML model training
 
-### License
+## Installation and Usage
+___
+
+### Installation
+
+#### Install uv
+Curl:
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+Homebrew:
+    brew install uv
+
+#### Clone the repository
+
+    git clone git@github.com:pinneylab/adk_evolutionary_landscape.git
+
+#### Navigate to the repository, create virtual environment
+
+    cd adk_evolutionary_landscape
+
+    uv sync
+
+    uv pip install .
+
+### Usage
+
+## License
 ___
 This code is released under the MIT License. See LICENSE file for details.
 
-### Citation
+## Citation
 ___
 ```
 @ARTICLE
