@@ -25,9 +25,13 @@ This is the in-progress code repository for the preprint ["Evolutionary-Scale En
 ### Installation
 
 #### Install uv
+
 Curl:
+
     curl -LsSf https://astral.sh/uv/install.sh | sh
+
 Homebrew:
+
     brew install uv
 
 #### Clone the repository
@@ -46,14 +50,12 @@ Homebrew:
 
 #### To run any of the notebooks, run jupyter-lab with UV
 
-    uv run jupyter-lab
+    uv run --with jupyter jupyter lab
 
 ## License
-___
 This code is released under the MIT License. See LICENSE file for details.
 
 ## Citation
-___
 ```
 @ARTICLE
 author={Muir, Duncan F. and Asper, Garrison P. R. and Notin, Pascal and Posner, Jacob A. and Marks, Debora S. and Keiser, Michael J. and Pinney, Margaux M.},
