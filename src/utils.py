@@ -1,60 +1,43 @@
-import matplotlib.pyplot as plt
-import matplotlib
 import numpy as np
 from sklearn.manifold import trustworthiness
-
-#https://stackoverflow.com/questions/7404116/defining-the-midpoint-of-a-colormap-in-matplotlib
-def shifted_color_map(cmap, start=0, midpoint=0.5, stop=1.0, name='shiftedcmap'):
-    '''
-    Function to offset the "center" of a colormap. Useful for
-    data with a negative min and positive max and you want the
-    middle of the colormap's dynamic range to be at zero.
-    Input
-    -----
-      cmap : The matplotlib colormap to be altered
-      start : Offset from lowest point in the colormap's range.
-          Defaults to 0.0 (no lower offset). Should be between
-          0.0 and `midpoint`.
-      midpoint : The new center of the colormap. Defaults to
-          0.5 (no shift). Should be between 0.0 and 1.0. In
-          general, this should be  1 - vmax / (vmax + abs(vmin))
-          For example if your data range from -15.0 to +5.0 and
-          you want the center of the colormap at 0.0, `midpoint`
-          should be set to  1 - 5/(5 + 15)) or 0.75
-      stop : Offset from highest point in the colormap's range.
-          Defaults to 1.0 (no upper offset). Should be between
-          `midpoint` and 1.0.
-    '''
-    cdict = {
-        'red': [],
-        'green': [],
-        'blue': [],
-        'alpha': []
-    }
-    # regular index to compute the colors
-    reg_index = np.linspace(start, stop, 257)
-    # shifted index to match the data
-    shift_index = np.hstack([
-        np.linspace(0.0, midpoint, 128, endpoint=False),
-        np.linspace(midpoint, 1.0, 129, endpoint=True)
-    ])
-    for ri, si in zip(reg_index, shift_index):
-        r, g, b, a = cmap(ri)
-        cdict['red'].append((si, r, r))
-        cdict['green'].append((si, g, g))
-        cdict['blue'].append((si, b, b))
-        cdict['alpha'].append((si, a, a))
-    newcmap = matplotlib.colors.LinearSegmentedColormap(name, cdict)
-    #plt.register_cmap(cmap=newcmap)
-    return newcmap
+from Bio import SeqIO
+from typing import List
+import pandas as pd
+from evcouplings.couplings import CouplingsModel
 
 def format_pval(p):
+    """
+    Format p-value for display.
+
+    Parameters
+    ----------
+    p : float
+        The p-value to format.
+    Returns
+    -------
+    str
+        Formatted p-value as a string.
+    """
     if p > 0.01:
         return f"p = {p:.2f}"
     else:
         return f"p < 10^" + str(int(np.ceil(np.log10(p))))
     
 def confidence_interval(data, z=1.96):
+    """
+    Calculate the confidence interval for a given dataset.
+
+    Parameters
+    ----------
+    data : array-like
+        The data for which to calculate the confidence interval.
+    z : float, optional
+        The z-score for the confidence level (default is 1.96 for 95% confidence).
+    Returns
+    -------
+    np.ndarray
+        The confidence interval for the data.
+    """
     n = len(data)
     std_err = np.std(data)/np.sqrt(n)
     return z*std_err
@@ -93,6 +76,100 @@ def compute_trustworthiness_by_lidtype(df, lid_types, col_name, embedding_start_
         for i in range(random_shuffle_n):
             all_random.append(trustworthiness(df.iloc[:, embedding_start_idx:embedding_end_idx], np.random.permutation(df[col_name].to_numpy()).reshape(-1,1), n_neighbors=k, metric=metric))
 
-       
         trust_result_dict["shuffled"].append(np.mean(all_random))
     return trust_result_dict
+
+def seq_dict_from_fasta(fasta_path: str) -> dict:
+    """
+    Read a FASTA file and return a dictionary with sequence IDs as keys and sequences as values.
+
+    Parameters
+    ----------
+    fasta_path : str
+        Path to the FASTA file.
+    Returns
+    -------
+    dict
+        Dictionary with sequence IDs as keys and sequences as values.
+    """
+    seq_dict = dict()
+    with open(fasta_path) as f:
+        for record in SeqIO.parse(f, "fasta"):
+            seq_dict[record.id] = str(record.seq)
+    return seq_dict
+
+def compute_hamiltonians(coupling_model_path: str,
+                         model_name: str, 
+                         seq_list: List[str],
+                         org_name_list: List[str]) -> pd.DataFrame:
+    """
+    Compute global hamiltonians for a list of sequences using a specified coupling model.
+
+    Parameters
+    ----------
+    coupling_model_path : str
+        Path to the coupling model file.
+    model_name : str
+        Name of the model to be used.
+    seq_list : List[str]
+        List of sequences for which to compute the global hamiltonians.
+    org_name_list : List[str]
+        List of organism names corresponding to the sequences.
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame containing the organism names and their corresponding global hamiltonians.
+    """
+    
+    # read in couplings model
+    model = CouplingsModel(coupling_model_path)
+
+    # compute global hamiltonians across sequence
+    hamiltonian_array = model.hamiltonians(seq_list)
+
+    # convert to DataFrame with org_name and global hamiltonian
+    hamiltonian_df = pd.DataFrame(hamiltonian_array[:,0], index=org_name_list)
+    hamiltonian_df.reset_index(inplace=True)
+    hamiltonian_df.rename(columns={"index": "org_name", 0: model_name}, inplace=True)
+    
+    return hamiltonian_df
+
+def filter_msa_to_ref_seq(sequence_dictionary: dict, 
+                          ref_seq_name: str) -> pd.DataFrame:
+    
+    """
+    Filter a multiple sequence alignment (MSA) to remove columns with gaps in a specified reference sequence.
+
+    Parameters
+    ----------
+    sequence_dictionary : dict
+        Dictionary with sequence IDs as keys and sequences as values.
+    ref_seq_name : str
+        Name of the reference sequence to filter against.
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame containing the filtered sequences.
+    """
+    
+    # convert sequence dictionary to DataFrame
+    df = pd.DataFrame(list(sequence_dictionary.items()), columns=["org_name", "seq"])
+    
+    # split seq into columns
+    split_seq = df["seq"].str.split("", expand=True).iloc[:, 1:-1]
+
+    # add org_names back
+    df = pd.concat([df, split_seq], axis=1)
+
+    # remove original seq column
+    df.drop(columns=["seq"], inplace=True)
+
+    # drop any column where reference sequence has a gap
+    ref_index = df[df["org_name"] == ref_seq_name].index[0]
+    ref_gaps = df.iloc[ref_index, 1:] == "-"
+    df.drop(columns=df.columns[1:][ref_gaps], inplace=True)
+
+    # merge seq into one column
+    df["seq"] = df.iloc[:, 1:].apply(lambda x: "".join(x), axis=1)
+
+    return df

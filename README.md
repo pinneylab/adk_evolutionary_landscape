@@ -1,5 +1,4 @@
-# Evolutionary-scale enzymology enables exploration of a multi-peaked catalytic landscape
-___
+# Evolutionary-scale enzymology enables exploration of a rugged catalytic landscape
 
 [![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
 [![](https://img.shields.io/badge/Python-3.9-blue.svg)](https://www.python.org/downloads/)
@@ -47,6 +46,16 @@ Homebrew:
     uv pip install . --python .venv
 
 ### Usage
+
+#### To run the scripts, run uv with the script name
+
+For example, to run the `run_adk_bootstrapped_ml_titration.py` script:
+
+    uv run scripts/run_adk_bootstrapped_ml_titration.py \
+      --split_dict data/adk_175_org_bootstrap_stratified_split.json \
+      --ohe_df data/one_hot_msa_175_orgs.csv \
+      --esm_df data/adk_esm_650M_layer33_embeddings.csv \
+      --dataset data/adk_ml_dataset.csv
 
 #### To run any of the notebooks, run jupyter-lab with UV
 
