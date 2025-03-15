@@ -1,11 +1,11 @@
 #!/bin/bash
 source adk_config.sh
-source activate adk_env
+conda activate adk_env
 
 export model_type='ESM2_650M'
 export embeddings_folder_ESM2=$embeddings_folder/$model_type
 
-python embeddings.py \
+python $src_path/embeddings.py \
     --model_type ${model_type} \
     --model_location ${ESM2_650M_location} \
     --input_data_location ${adk_experimental_data_folder} \

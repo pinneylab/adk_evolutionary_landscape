@@ -1,12 +1,12 @@
 #!/bin/bash
 source adk_config.sh
-source activate adk_env
+conda activate adk_env
 
 export model_type='MSA_Transformer'
 export embeddings_folder_MSAT=$embeddings_folder/$model_type
 export num_MSA_sequences=384
 
-python embeddings.py \
+python $src_path/embeddings.py \
     --model_type ${model_type} \
     --model_location ${MSA_Transformer_location} \
     --input_data_location ${adk_experimental_data_folder} \
