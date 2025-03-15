@@ -1,0 +1,9 @@
+{
+    "log10_km": {
+        "type": "continuous",
+        "dim": 1,
+        "var_name": "log10_km",
+        "in_NPT_loss": true,
+        "main_target": true
+    }
+}
