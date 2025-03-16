@@ -6,7 +6,7 @@ adk_data_path = sys.argv[1]
 input_data_name = sys.argv[2]
 data = pd.read_csv(os.path.join(adk_data_path,input_data_name))
 
-with open("20240717_bootstrap_stratified_split.json", 'r') as file:
+with open(os.path.join(adk_data_path, "adk_175_org_bootstrap_stratified_split.json"), 'r') as file:
     folds = json.load(file)
     
 # Collect all possible species and create the DataFrame columns

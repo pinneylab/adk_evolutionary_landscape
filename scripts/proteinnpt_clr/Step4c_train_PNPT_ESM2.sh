@@ -1,6 +1,6 @@
 #!/bin/bash
 source adk_config.sh
-conda activate adk_env
+conda activate adk_pnpt_env
 
 export model_config_location=$src_path/model_configs/PNPT_ESM2_650M.json
 export embeddings_folder_ESM2_650M=$embeddings_folder/ESM2_650M

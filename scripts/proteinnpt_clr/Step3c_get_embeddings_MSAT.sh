@@ -1,6 +1,6 @@
 #!/bin/bash
 source adk_config.sh
-conda activate adk_env
+conda activate adk_pnpt_pnpt_env
 
 export model_type='MSA_Transformer'
 export embeddings_folder_MSAT=$embeddings_folder/$model_type

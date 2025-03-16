@@ -2,9 +2,9 @@
 source adk_config.sh
 
 # Environment setup - Conda
-conda env create -f $adk_repo_path/adk_env.yml
+conda env create -f $adk_repo_path/adk_pnpt_env.yml
 
-# Folders contraining pretrained model checkpoints
+# Folders containing pretrained model checkpoints
 mkdir -p $adk_data_path/ESM
 mkdir -p $adk_data_path/ESM/MSA_Transformer
 mkdir -p $adk_data_path/ESM/ESM2

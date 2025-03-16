@@ -1,6 +1,6 @@
 #!/bin/bash
 source adk_config.sh
-conda activate adk_env
+conda activate adk_pnpt_env
 
 export model_type='Tranception'
 export embeddings_folder_Tranception=$embeddings_folder/$model_type
