@@ -1,0 +1,30 @@
+{
+    "log10_kcat": {
+        "type": "continuous",
+        "dim": 1,
+        "var_name": "log10_kcat",
+        "in_NPT_loss": true,
+        "main_target": true
+    },
+    "log10_km": {
+        "type": "continuous",
+        "dim": 1,
+        "var_name": "log10_km",
+        "in_NPT_loss": true,
+        "main_target": false
+    },
+    "temperature": {
+        "type": "continuous",
+        "dim": 1,
+        "var_name": "temperature",
+        "in_NPT_loss": true,
+        "main_target": false
+    },
+    "lid_type": {
+        "type": "categorical",
+        "dim": 4,
+        "var_name": "lid_type",
+        "in_NPT_loss": true,
+        "main_target": false
+    }
+}

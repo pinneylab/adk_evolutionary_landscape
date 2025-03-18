@@ -1,0 +1,28 @@
+[project]
+name = "adk-evolutionary-landscape"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.9, <3.10"
+dependencies = [
+    "biopython>=1.85",
+    "datasets>=3.4.0",
+    "evcouplings>=0.2.1",
+    "h5py>=3.13.0",
+    "ipykernel>=6.29.5",
+    "jupyter>=1.1.1",
+    "matplotlib>=3.9.4",
+    "numba==0.58.1",
+    "numpy>=1.23,<2",
+    "pandas>=2.2.3",
+    "pip>=25.0.1",
+    "proteinnpt==1.5.5",
+    "scikit-learn>=1.3.0,<1.4",
+    "scipy==1.9.0",
+    "seaborn>=0.13.2",
+    "tokenizers>=0.21.1",
+    "torch==2.4.0",
+    "transformers>=4.49.0",
+    "umap-learn==0.5.5",
+    "wandb>=0.19.8",
+]

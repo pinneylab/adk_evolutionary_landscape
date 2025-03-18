@@ -92,3 +92,7 @@ wandb/
 *.csv
 *lock.*
 *lightning_logs*
+data/
+fig_pdfs/
+
+

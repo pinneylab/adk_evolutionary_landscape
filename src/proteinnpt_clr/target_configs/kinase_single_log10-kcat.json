@@ -1,0 +1,9 @@
+{
+    "log10_kcat": {
+        "type": "continuous",
+        "dim": 1,
+        "var_name": "log10_kcat",
+        "in_NPT_loss": true,
+        "main_target": true
+    }
+}
