@@ -1,6 +1,5 @@
 #!/bin/bash
 source adk_config.sh
-conda activate adk_pnpt_env
 
 export model_config_location=$src_path/model_configs/CLR_Tranception.json
 export embeddings_folder_Tranception=$embeddings_folder/Tranception
@@ -19,7 +18,7 @@ export fold_index=0   # Integer included in [0,29] specifying the fold index
 export train_size=140 # Size of training data [20|40|60|80|100|120|140]
 export fold_variable_name=$fold_index"_train_size_"$train_size
 
-python $src_path/train.py \
+uv run $src_path/train.py \
     --data_location ${adk_data_path} \
     --model_config_location ${model_config_location} \
     --embedding_model_location ${Tranception_location} \

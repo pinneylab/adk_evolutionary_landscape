@@ -1,10 +1,10 @@
 # This config file contains the paths to all relevant data objects used by the ProteinNPT codebase. Only the next two lines should be updated based on your particular setup
-export adk_data_path="Set this path to a location where model checkpoints and other large files will be saved"
-export adk_repo_path="Set this path to the root of the adk_evolutionary_landscape repository"
+export adk_data_path="/srv/home/dmuir/code/adk_evolutionary_landscape/data" 
+export adk_repo_path="/srv/home/dmuir/code/adk_evolutionary_landscape"
 export src_path=$adk_repo_path/src/proteinnpt_clr
 
 # Reference files for substitution and indel assays
-export reference_file_path=$adk_repo_path/scripts/proteinnpt_clr/adk_reference_file.csv
+export reference_file_path=$adk_data_path/pnpt/adk_reference_file.csv
 export target_seq="MIIVLLGAPGAGKGTQSVLVAEKYGLKHISTGDLLREEIANNTELGKQAKKLIDGGNLVPDEMILGLLKNAFLNRGKGVVLDGFPRTLSQAEMMHPIVKGLAEKLSAVINIKLSEDEITQRIVLRRQCKNCGNIFNLRFIKNFDGKCPKCGSTDIYQRADDNEESAKNRINVYHSQTEPVVGFYKNKTYYKEVDGSKNKEEVFEEISKFINRKK"
 
 # Folders contraining pretrained model checkpoints

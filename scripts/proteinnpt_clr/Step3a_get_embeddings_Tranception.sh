@@ -1,11 +1,10 @@
 #!/bin/bash
 source adk_config.sh
-conda activate adk_pnpt_env
 
 export model_type='Tranception'
 export embeddings_folder_Tranception=$embeddings_folder/$model_type
 
-python $src_path/embeddings.py \
+uv run $src_path/embeddings.py \
     --model_type ${model_type} \
     --model_location ${Tranception_location} \
     --input_data_location ${adk_experimental_data_folder} \

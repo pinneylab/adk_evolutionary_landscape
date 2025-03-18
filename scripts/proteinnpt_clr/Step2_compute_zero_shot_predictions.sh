@@ -1,11 +1,10 @@
 #!/bin/bash
 source adk_config.sh
-conda activate adk_pnpt_env
 
 export DMS_index=0
 export batch_size_inference=1
 
-python $src_path/zero_shot_fitness_tranception.py \
+uv run $src_path/zero_shot_fitness_tranception.py \
     --checkpoint ${Tranception_location} \
     --batch_size_inference ${batch_size_inference} \
     --DMS_reference_file_path ${reference_file_path} \
@@ -16,7 +15,7 @@ python $src_path/zero_shot_fitness_tranception.py \
     --clustal_omega_location ${path_to_clustalomega} \
     --scoring_window 'optimal'
 
-python $src_path/merge_zero_shot.py \
+uv run $src_path/merge_zero_shot.py \
     --DMS_reference_file_path ${reference_file_path} \
     --DMS_mutants_folder ${adk_experimental_data_folder} \
     --zero_shot_scores_folder ${zero_shot_scores_folder} \
