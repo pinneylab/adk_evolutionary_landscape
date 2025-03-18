@@ -7,23 +7,9 @@
 
 This is the in-progress code repository for the preprint ["Evolutionary-Scale Enzymology Enables Biochemical Constant Prediction Across a Multi-Peaked Catalytic Landscape"](https://www.biorxiv.org/content/10.1101/2024.10.23.619915v1).
 
-## Contents (needs to be updated)
+## Installation and Setup
 
-  - scripts:
-    - **
-  - figures:
-    - **fig7**: dimensionality reduction, and manifold metrics (clustering/trustworthiness)
-    - **fig8**: plotting ML and PNPT results
-  - notebooks:
-    - **bootstrap_supervised_ml**: dataset bootstrapping,
-     ablation, and lightweight supervised ML model training
-    - **augmented_potts_regression**: (notes here)
-
-## Installation and Usage
-
-### Installation
-
-#### Install uv
+### Install uv
 
 Curl:
 
@@ -33,11 +19,11 @@ Homebrew:
 
     brew install uv
 
-#### Clone the repository
+### Clone the repository
 
     git clone git@github.com:pinneylab/adk_evolutionary_landscape.git
 
-#### Navigate to the repository, create virtual environment
+### Navigate to the repository, create virtual environment
 
     cd adk_evolutionary_landscape
 
@@ -45,9 +31,19 @@ Homebrew:
 
     uv pip install . --python .venv
 
-### Usage
+### Download and unpack source data
 
-#### To run the scripts, run uv with the script name
+Source data files are hosted in a Zenodo repository: https://zenodo.org/records/15022271
+
+In main repo dir:
+
+    curl -o data.zip https://zenodo.org/records/15022271/files/data.zip
+
+    unzip data.zip
+
+## Usage
+
+### To run python scripts, run uv with the script name
 
 For example, to run the `run_adk_bootstrapped_ml_titration.py` script:
 
@@ -57,9 +53,32 @@ For example, to run the `run_adk_bootstrapped_ml_titration.py` script:
       --esm_df data/adk_esm_650M_layer33_embeddings.csv \
       --dataset data/adk_ml_dataset.csv
 
-#### To run any of the notebooks, run jupyter-lab with UV
+### To run jupyter notebooks, run jupyter-lab with UV
 
     uv run --with jupyter jupyter lab
+
+### To run ProteinNPT scripts (Cuda/GPU required)
+
+The ProteinNPT model architecture is described in the associated [paper](https://papers.nips.cc/paper_files/paper/2023/hash/6a4d5d85f7a52f062d23d98d544a5578-Abstract-Conference.html) and code is available on [GitHub](https://github.com/OATML-Markslab/ProteinNPT).
+
+From main repo dir, navigate to ProteinNPT script folder:
+
+    cd scripts/proteinnpt_clr
+
+You will need to edit and configure two variables at the top of the `adk_config.sh` script in scripts/proteinnpt_clr:
+
+```
+adk_repo_path
+adk_data_path
+```
+These should be absolute paths to the corresponding repo and data folders.
+
+After configuring these variables, run the following script to setup and download necessary dependencies:
+
+    bash adk_setup.sh
+
+Then you can run scripts `StepX.sh` in numerical order to train and evaulate the deep learning models. However, a results file is provided in
+the source data files should you wish to skip this step and visualize the results.
 
 ## License
 This code is released under the MIT License. See LICENSE file for details.
@@ -73,4 +92,3 @@ year={2024},
 DOI={10.1101/2024.10.23.619915v1}
 ```
 
-The ProteinNPT model architecture is described in the associated [paper](https://papers.nips.cc/paper_files/paper/2023/hash/6a4d5d85f7a52f062d23d98d544a5578-Abstract-Conference.html) and code is available on [GitHub](https://github.com/OATML-Markslab/ProteinNPT).
