@@ -3,8 +3,31 @@ import pandas as pd
 import seaborn as sns
 import numpy as np
 import matplotlib
+from typing import List
 
-def plot_barplot_trust_by_lidtype(method_trust_dict, lid_types, k, title):
+def plot_barplot_trust_by_lidtype(method_trust_dict: dict, 
+                                  lid_types: List[str], 
+                                  k: int,
+                                  title: str):
+    """
+    Plot a barplot of trustworthiness by lidtype.
+
+    Parameters
+    ----------
+    method_trust_dict : dict
+        A dictionary containing trustworthiness values for different methods.
+    lid_types : List[str]
+        A list of lid types.
+    k : int
+        The number of neighbors to consider.
+    title : str
+        The title of the plot.
+
+    Returns
+    -------
+    None
+    """
+
     fig, ax = plt.subplots(figsize=(10, 8))
 
     idx = k - 3
@@ -46,6 +69,34 @@ def plot_confidence_interval(ax: plt.Axes,
                              linewidth=4,
                              point_size=100, 
                              alpha=0.2,):
+    """
+    Plot a line plot with points and a confidence interval on a given axis.
+
+    Parameters
+    ----------
+    ax : plt.Axes
+        The axis to plot on.
+    x : list
+        The x-values for the plot.
+    y_mean : np.ndarray
+        The mean y-values for the plot.
+    y_ci : np.ndarray
+        The confidence interval for the y-values.
+    color : str
+        The color of the plot.
+    label : str
+        The label for the plot.
+    linewidth : int, optional
+        The width of the line (default is 4).
+    point_size : int, optional
+        The size of the points (default is 100).
+    alpha : float, optional
+        The transparency of the confidence interval (default is 0.2).
+    Returns
+    -------
+    None
+
+    """
 
     ax.plot(x,
             y_mean, 

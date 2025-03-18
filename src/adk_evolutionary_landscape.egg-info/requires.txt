@@ -1,4 +1,7 @@
+biopython>=1.85
+evcouplings>=0.2.1
 ipykernel>=6.29.5
+jupyter>=1.1.1
 matplotlib>=3.9.4
 numba==0.58.1
 numpy<2,>=1.23

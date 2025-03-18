@@ -42,7 +42,42 @@ def confidence_interval(data, z=1.96):
     std_err = np.std(data)/np.sqrt(n)
     return z*std_err
 
-def compute_trustworthiness_by_lidtype(df, lid_types, col_name, embedding_start_idx, embedding_end_idx, top_n_neighbors, metric="euclidean", random_shuffle_n=30):
+def compute_trustworthiness_by_lidtype(df: pd.DataFrame,
+                                       lid_types: List[str], 
+                                       col_name: str, 
+                                       embedding_start_idx: int, 
+                                       embedding_end_idx: int, 
+                                       top_n_neighbors: int, 
+                                       metric: str="euclidean", 
+                                       random_shuffle_n: int=30):
+    """
+    Compute trustworthiness for different lid types in a DataFrame.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        The DataFrame containing the embeddings and target label.
+    lid_types : List[str]
+        A list of lid types to compute trustworthiness for.
+    col_name : str
+        The name of the column containing the target label.
+    embedding_start_idx : int
+        The starting index of the embedding columns.
+    embedding_end_idx : int
+        The ending index of the embedding columns.
+    top_n_neighbors : int
+        The number of neighbors to consider for trustworthiness.
+    metric : str, optional
+        The metric to use for trustworthiness calculation (default is "euclidean").
+    random_shuffle_n : int, optional
+        The number of times to shuffle the data for random trustworthiness calculation (default is 30).
+    Returns
+    -------
+    trust_result_dict : dict
+        A dictionary containing trustworthiness values for different lid types.
+
+    """
+
     np.random.seed(314)
 
     trust_result_dict = {
