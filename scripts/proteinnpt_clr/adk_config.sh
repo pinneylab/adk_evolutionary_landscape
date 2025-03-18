@@ -1,6 +1,6 @@
 # This config file contains the paths to all relevant data objects used by the ProteinNPT codebase. Only the next two lines should be updated based on your particular setup
-export adk_data_path="/srv/home/dmuir/code/adk_evolutionary_landscape/data" 
-export adk_repo_path="/srv/home/dmuir/code/adk_evolutionary_landscape"
+export adk_data_path="/path/to/data/folder/in/repo" 
+export adk_repo_path="/path/to/repo/folder"
 export src_path=$adk_repo_path/src/proteinnpt_clr
 
 # Reference files for substitution and indel assays
